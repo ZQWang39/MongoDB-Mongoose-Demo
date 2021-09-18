@@ -1,7 +1,7 @@
 const express = require("express");
 const {
   addCourse,
-  getAllCourse,
+  getAllCourses,
   getCourseById,
   updateCourseById,
   deleteCourseById,
@@ -10,7 +10,7 @@ const {
 const router = express.Router();
 
 router.post("", addCourse);
-router.get("", getAllCourse);
+router.get("", getAllCourses);
 router.get("/:id", getCourseById);
 router.put("/:id", updateCourseById);
 router.delete("/:id", deleteCourseById);
