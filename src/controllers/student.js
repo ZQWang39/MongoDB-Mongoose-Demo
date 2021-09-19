@@ -2,7 +2,7 @@ const Student = require("../models/student");
 
 async function getAllStudents(req, res) {
   const students = await Student.find().exec();
-  res.json(students);
+  res.status(201).json(students);
 }
 
 async function addStudent(req, res) {
@@ -23,7 +23,7 @@ async function getStudentById(req, res) {
   if (!student) {
     return res.sendStatus(404);
   }
-  return res.json(student);
+  return res.status(201).json(student);
 }
 async function updateStudentById(req, res) {
   const { id } = req.params;
@@ -36,7 +36,7 @@ async function updateStudentById(req, res) {
   if (!student) {
     return res.sendStatus(404);
   }
-  return res.json(student);
+  return res.status(201).json(student);
 }
 async function deleteStudentById(req, res) {
   const { id } = req.params;
@@ -45,6 +45,7 @@ async function deleteStudentById(req, res) {
     return res.sendStatus(404);
   }
   return res.sendStatus(204);
+  //return res.json(student);
 }
 
 module.exports = {

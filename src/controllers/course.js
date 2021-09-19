@@ -1,8 +1,8 @@
 const Course = require("../models/course");
 
 async function getAllCourses(req, res) {
-  const courses = await Course.find().exec();
-  res.json(courses);
+  const courses = await Course.find().exec(); //add .exec() at the end of the query means the query has finished and a standard Promise.
+  res.status(201).json(courses);
 }
 
 async function addCourse(req, res) {
@@ -23,7 +23,7 @@ async function getCourseById(req, res) {
   if (!course) {
     return res.sendStatus(404);
   }
-  return res.json(course);
+  return res.status(201).json(course);
 }
 async function updateCourseById(req, res) {
   const { id } = req.params;
@@ -32,12 +32,12 @@ async function updateCourseById(req, res) {
   const course = await Course.findByIdAndUpdate(
     id,
     { name, description },
-    { new: true }
+    { new: true } //如果没有这一项，返回的将是update之前的数据，加了为true的情况下update之后的data
   ).exec();
   if (!course) {
     return res.sendStatus(404);
   }
-  return res.json(course);
+  return res.status(201).json(course);
 }
 async function deleteCourseById(req, res) {
   const { id } = req.params;
@@ -46,6 +46,7 @@ async function deleteCourseById(req, res) {
     return res.sendStatus(404);
   }
   return res.sendStatus(204);
+  //return res.json(course);
 }
 
 module.exports = {
