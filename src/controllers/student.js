@@ -16,6 +16,23 @@ async function addStudent(req, res) {
 
   await student.save();
   return res.status(201).json(student);
+  //3 ways to caputure the error:
+  // 1.student.save().then((result) => {}).catch(error => { })
+
+  // 2.try{
+  //   await student.save();
+  // }catch(error) {
+  //   console.error(error);
+  // }
+
+  // 3.student.save((error, result)=>{
+  //   if(error){
+  //     console.log(error.message);
+  //     return next(error);
+  //     return res.status(400).json({"error":"error mssage"})
+  //   }
+  //   return res.status(200).json(student);
+  // })
 }
 async function getStudentById(req, res) {
   const { id } = req.params;
