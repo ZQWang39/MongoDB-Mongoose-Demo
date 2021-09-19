@@ -32,6 +32,12 @@ const schema = new mongoose.Schema(
         message: "Invalid email format...",
       },
     },
+    courses: [
+      {
+        type: String,
+        ref: "Course",
+      },
+    ],
   },
   {
     timestamps: true,

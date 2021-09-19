@@ -19,6 +19,12 @@ const schema = new mongoose.Schema(
     //   type: String,
     //   select: false, //获取时不显示虚拟字段
     // },
+    students: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Student",
+      },
+    ],
   },
   {
     timestamps: true, // it will record the timestamps when add data to database

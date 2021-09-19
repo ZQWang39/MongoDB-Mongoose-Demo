@@ -1,4 +1,5 @@
 const Student = require("../models/student");
+const Course = require("../models/course");
 
 async function getAllStudents(req, res) {
   const students = await Student.find().exec();
@@ -36,7 +37,9 @@ async function addStudent(req, res) {
 }
 async function getStudentById(req, res) {
   const { id } = req.params;
-  const student = await Student.findById(id).exec();
+  const student = await Student.findById(id)
+    .populate("courses", "name discription") //展开某一项目并选取想要显示的内容
+    .exec();
   if (!student) {
     return res.sendStatus(404);
   }
@@ -64,6 +67,21 @@ async function deleteStudentById(req, res) {
   return res.sendStatus(204);
   //return res.json(student);
 }
+async function addCourseToStudent(req, res) {
+  const { id, code } = req.params;
+  const student = await Student.findById(id).exec();
+  const course = await Course.findById(code).exec();
+  if (!student || !course) {
+    return res.status(404).json("Student/Course not found!");
+  } else {
+    // student.courses.push();
+    student.courses.addToSet(course._id); //addToSet()不重复添加
+    course.students.addToSet(student._id);
+    await student.save();
+    await course.save();
+    res.json(student);
+  }
+}
 
 module.exports = {
   getAllStudents,
@@ -71,4 +89,5 @@ module.exports = {
   getStudentById,
   updateStudentById,
   deleteStudentById,
+  addCourseToStudent,
 };
