@@ -13,7 +13,7 @@ const schema = new mongoose.Schema(
     },
     description: {
       type: String,
-      default: "",
+      default: " ",
     },
     // id: {
     //   type: String,

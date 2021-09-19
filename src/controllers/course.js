@@ -1,4 +1,5 @@
 const Course = require("../models/course");
+const Joi = require("joi");
 
 async function getAllCourses(req, res) {
   const courses = await Course.find().exec(); //add .exec() at the end of the query means the query has finished and a standard Promise.
@@ -6,8 +7,18 @@ async function getAllCourses(req, res) {
 }
 
 async function addCourse(req, res) {
-  const { name, code, description } = req.body;
+  // const { name, code, description } = req.body;
   // validate data
+  const stringValidator = Joi.string().required();
+  const schema = Joi.object({
+    name: stringValidator,
+    code: stringValidator.regex(/^[a-zA-Z]+[0-9]+$/),
+    description: Joi.string(),
+  });
+  const { name, code, description } = await schema.validateAsync(req.body, {
+    allowUnknown: true,
+    stripUnknown: true,
+  });
   const course = new Course({
     name,
     description,
