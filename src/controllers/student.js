@@ -61,9 +61,16 @@ async function updateStudentById(req, res) {
 async function deleteStudentById(req, res) {
   const { id } = req.params;
   const student = await Student.findByIdAndDelete(id).exec();
+
   if (!student) {
     return res.sendStatus(404);
   }
+  //If student exsits, find all the courses which are linked to the student id,
+  //pull the student id out from the course
+  await Course.updateMany(
+    { students: student._id },
+    { $pull: { students: student._id } }
+  ).exec();
   return res.sendStatus(204);
   //return res.json(student);
 }
@@ -83,6 +90,22 @@ async function addCourseToStudent(req, res) {
   }
 }
 
+async function removeCourseFromStudent(req, res) {
+  const { id, code } = req.params;
+  const student = await Student.findById(id).exec();
+  const course = await Course.findById(code).exec();
+  if (!student || !course) {
+    return res.status(404).json("Student/Course not found!");
+  } else {
+    // student.courses.push();
+    student.courses.pull(course._id); //addToSet()不重复添加
+    course.students.pull(student._id);
+    await student.save();
+    await course.save();
+    res.json(student);
+  }
+}
+
 module.exports = {
   getAllStudents,
   addStudent,
@@ -90,4 +113,5 @@ module.exports = {
   updateStudentById,
   deleteStudentById,
   addCourseToStudent,
+  removeCourseFromStudent,
 };
