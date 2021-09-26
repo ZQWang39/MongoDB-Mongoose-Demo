@@ -2,19 +2,19 @@ const User = require("../models/user");
 const { tokenGenerator } = require("../utils/jwt");
 
 async function addUser(req, res, next) {
-  const { userName, password } = req.body;
-  const exsitingUser = await User.findOne({ userName: userName }).exec();
+  const { username, password } = req.body;
+  const exsitingUser = await User.findOne({ username }).exec();
   if (exsitingUser) {
-    res.sendStatus(409); //Conflict
+    return res.sendStatus(409); //Conflict
   }
   const user = new User({
-    userName,
+    username,
     password,
   });
 
   await user.save();
   const token = tokenGenerator({ id: user._id });
-  return res.status(201).json({ token, userName });
+  return res.status(201).json({ token, username });
 }
 
 module.exports = {

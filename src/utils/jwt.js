@@ -1,17 +1,18 @@
+require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
-const { JWT_KEY } = process.env;
+const secret = process.env.JWT_KEY;
 
 function tokenGenerator(payload) {
-  return jwt.sign(payload, JWT_KEY, { expiresIn: "6h" });
+  return jwt.sign(payload, secret, { expiresIn: "1d" });
 }
 
 function tokenValidator(token) {
   // return jwt.verify(token, JWT_KEY);
   try {
-    return jwt.verify(token, JWT_KEY);
+    return jwt.verify(token, secret);
   } catch (err) {
-    console.error(err);
+    console.log(err.message);
     return null;
   }
 }
