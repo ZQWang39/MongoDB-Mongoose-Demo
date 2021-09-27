@@ -11,7 +11,7 @@ async function addUser(req, res, next) {
     username,
     password,
   });
-
+  await user.hashPassword();
   await user.save();
   const token = tokenGenerator({ id: user._id });
   return res.status(201).json({ token, username });

@@ -1,0 +1,9 @@
+encrypt
+decrypt
+hash
+
+a->x encrypt 加密
+x->a decrypt 解密
+
+ A -> X hash 
+ X !-> A  经过hash加密之后不可逆
